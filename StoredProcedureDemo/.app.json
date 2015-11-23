@@ -1,15 +1,41 @@
 {
   "type": "kendo-ui-mobile",
-  "isNew": true,
+  "views": [
+    {
+      "type": "kendo-ui-mobile:view",
+      "name": "homeView",
+      "components": [
+        {
+          "type": "kendo-ui-mobile:list",
+          "name": "homeViewModel",
+          "dataProvider": "defaultProvider",
+          "collection": "Activities",
+          "iconField": true,
+          "headerField": "Text",
+          "subHeaderField": "Text",
+          "masterDetails": false,
+          "pullToRefresh": false,
+          "endlessScroll": false
+        }
+      ],
+      "title": "Home View",
+      "addToNavigation": true,
+      "icon": "home"
+    }
+  ],
   "dataProviders": [
     {
       "type": "kendo-ui-mobile:dataProvider",
-      "title": "DefaultProvider",
       "name": "defaultProvider",
+      "title": "DefaultProvider",
       "source": "everlive",
-      "offlineStorage": true,
       "everliveKey": "Vem0yY7FcidbN71m",
-      "everliveUrl": ""
+      "offlineStorage": true
     }
-  ]
+  ],
+  "name": "kendoUiMobileApp",
+  "navigation": "tabstrip",
+  "view": "homeView",
+  "transition": "slide",
+  "skin": "flat"
 }

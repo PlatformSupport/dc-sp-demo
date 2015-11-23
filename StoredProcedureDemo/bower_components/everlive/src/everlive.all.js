@@ -1359,26 +1359,26 @@ var at, // The index of the current character
             text:    text
         };
     },
-    
+
     next = function (c) {
         // If a c parameter is provided, verify that it matches the current character.
         if (c && c !== ch) {
             error("Expected '" + c + "' instead of '" + ch + "'");
         }
-        
+
         // Get the next character. When there are no more characters,
         // return the empty string.
-        
+
         ch = text.charAt(at);
         at += 1;
         return ch;
     },
-    
+
     number = function () {
         // Parse a number value.
         var number,
             string = '';
-        
+
         if (ch === '-') {
             string = '-';
             next('-');
@@ -1412,14 +1412,14 @@ var at, // The index of the current character
             return number;
         }
     },
-    
+
     string = function () {
         // Parse a string value.
         var hex,
             i,
             string = '',
             uffff;
-        
+
         // When parsing for string values, we must look for " and \ characters.
         if (ch === '"') {
             while (next()) {
@@ -1576,7 +1576,7 @@ value = function () {
 
 module.exports = function (source, reviver) {
     var result;
-    
+
     text = source;
     at = 0;
     ch = ' ';
@@ -1631,7 +1631,7 @@ function quote(string) {
     // backslash characters, then we can safely slap some quotes around it.
     // Otherwise we must also replace the offending characters with safe escape
     // sequences.
-    
+
     escapable.lastIndex = 0;
     return escapable.test(string) ? '"' + string.replace(escapable, function (a) {
         var c = meta[a];
@@ -1649,47 +1649,47 @@ function str(key, holder) {
         mind = gap,
         partial,
         value = holder[key];
-    
+
     // If the value has a toJSON method, call it to obtain a replacement value.
     if (value && typeof value === 'object' &&
             typeof value.toJSON === 'function') {
         value = value.toJSON(key);
     }
-    
+
     // If we were called with a replacer function, then call the replacer to
     // obtain a replacement value.
     if (typeof rep === 'function') {
         value = rep.call(holder, key, value);
     }
-    
+
     // What happens next depends on the value's type.
     switch (typeof value) {
         case 'string':
             return quote(value);
-        
+
         case 'number':
             // JSON numbers must be finite. Encode non-finite numbers as null.
             return isFinite(value) ? String(value) : 'null';
-        
+
         case 'boolean':
         case 'null':
             // If the value is a boolean or null, convert it to a string. Note:
             // typeof null does not produce 'null'. The case is included here in
             // the remote chance that this gets fixed someday.
             return String(value);
-            
+
         case 'object':
             if (!value) return 'null';
             gap += indent;
             partial = [];
-            
+
             // Array.isArray
             if (Object.prototype.toString.apply(value) === '[object Array]') {
                 length = value.length;
                 for (i = 0; i < length; i += 1) {
                     partial[i] = str(i, value) || 'null';
                 }
-                
+
                 // Join all of the elements together, separated with commas, and
                 // wrap them in brackets.
                 v = partial.length === 0 ? '[]' : gap ?
@@ -1698,7 +1698,7 @@ function str(key, holder) {
                 gap = mind;
                 return v;
             }
-            
+
             // If the replacer is an array, use it to select the members to be
             // stringified.
             if (rep && typeof rep === 'object') {
@@ -1724,7 +1724,7 @@ function str(key, holder) {
                     }
                 }
             }
-            
+
         // Join all of the member texts together, separated with commas,
         // and wrap them in braces.
 
@@ -1740,7 +1740,7 @@ module.exports = function (value, replacer, space) {
     var i;
     gap = '';
     indent = '';
-    
+
     // If the space parameter is a number, make an indent string containing that
     // many spaces.
     if (typeof space === 'number') {
@@ -1760,7 +1760,7 @@ module.exports = function (value, replacer, space) {
     && (typeof replacer !== 'object' || typeof replacer.length !== 'number')) {
         throw new Error('JSON.stringify');
     }
-    
+
     // Make a fake root object containing our value under the key of ''.
     // Return the result of stringifying the value.
     return str('', {'': value});
@@ -1791,7 +1791,7 @@ module.exports = function (value, replacer, space) {
   var jstz = (function () {
       'use strict';
       var HEMISPHERE_SOUTH = 's',
-          
+
           /**
            * Gets the offset in minutes from UTC for a certain date.
            * @param {Date} date
@@ -1830,12 +1830,12 @@ module.exports = function (value, replacer, space) {
            */
           date_is_dst = function (date) {
               var is_southern = date.getMonth() > 7,
-                  base_offset = is_southern ? get_june_offset(date.getFullYear()) : 
+                  base_offset = is_southern ? get_june_offset(date.getFullYear()) :
                                               get_january_offset(date.getFullYear()),
                   date_offset = get_date_offset(date),
                   is_west = base_offset < 0,
                   dst_offset = base_offset - date_offset;
-                  
+
               if (!is_west && !is_southern) {
                   return dst_offset < 0;
               }
@@ -1850,7 +1850,7 @@ module.exports = function (value, replacer, space) {
            * client device.
            *
            * Returns a key that can be used to do lookups in jstz.olson.timezones.
-           * eg: "720,1,2". 
+           * eg: "720,1,2".
            *
            * @returns {String}
            */
@@ -1943,7 +1943,7 @@ module.exports = function (value, replacer, space) {
       return {
           determine: determine,
           date_is_dst: date_is_dst,
-          dst_start_for: dst_start_for 
+          dst_start_for: dst_start_for
       };
   }());
 
@@ -1985,7 +1985,7 @@ module.exports = function (value, replacer, space) {
           },
 
           timezone_name = tz_name,
-          
+
           /**
            * Checks if a timezone has possible ambiguities. I.e timezones that are similar.
            *
@@ -2769,7 +2769,7 @@ module.exports = function (value, replacer, space) {
            usesExclusion = true;
         }
         if(val !== 0 && usesExclusion) {
-            throw new Error("You cannot mix including and excluding fields."); 
+            throw new Error("You cannot mix including and excluding fields.");
         }
       });
 
@@ -3737,17 +3737,17 @@ module.exports = function (value, replacer, space) {
       var date = computeValue(obj, expr['date']);
       // TODO: use python-style date formatting
       /*
-       %Y    Year (4 digits, zero padded)    0000-9999
-       %m    Month (2 digits, zero padded)    01-12
-       %d    Day of Month (2 digits, zero padded)    01-31
-       %H    Hour (2 digits, zero padded, 24-hour clock)    00-23
-       %M    Minute (2 digits, zero padded)    00-59
-       %S    Second (2 digits, zero padded)    00-60
-       %L    Millisecond (3 digits, zero padded)    000-999
-       %j    Day of year (3 digits, zero padded)    001-366
-       %w    Day of week (1-Sunday, 7-Saturday)    1-7
-       %U    Week of year (2 digits, zero padded)    00-53
-       %%    Percent Character as a Literal    %
+       %Y	Year (4 digits, zero padded)	0000-9999
+       %m	Month (2 digits, zero padded)	01-12
+       %d	Day of Month (2 digits, zero padded)	01-31
+       %H	Hour (2 digits, zero padded, 24-hour clock)	00-23
+       %M	Minute (2 digits, zero padded)	00-59
+       %S	Second (2 digits, zero padded)	00-60
+       %L	Millisecond (3 digits, zero padded)	000-999
+       %j	Day of year (3 digits, zero padded)	001-366
+       %w	Day of week (1-Sunday, 7-Saturday)	1-7
+       %U	Week of year (2 digits, zero padded)	00-53
+       %%	Percent Character as a Literal	%
        */
       throw new Error("Not Implemented");
     }
@@ -7857,45 +7857,45 @@ var CryptoJS = require('./core').CryptoJS;
 
 // create custom json serialization format
 var JsonFormatter = {
-    stringify: function (cipherParams) {
-        // create json object with ciphertext
-        var jsonObj = {
-            ct: cipherParams.ciphertext.toString(CryptoJS.enc.Base64)
-        };
-        
-        // optionally add iv and salt
-        if (cipherParams.iv) {
-            jsonObj.iv = cipherParams.iv.toString();
-        }
-        
-        if (cipherParams.salt) {
-            jsonObj.s = cipherParams.salt.toString();
-        }
+	stringify: function (cipherParams) {
+		// create json object with ciphertext
+		var jsonObj = {
+			ct: cipherParams.ciphertext.toString(CryptoJS.enc.Base64)
+		};
 
-        // stringify json object
-        return JSON.stringify(jsonObj)
-    },
+		// optionally add iv and salt
+		if (cipherParams.iv) {
+			jsonObj.iv = cipherParams.iv.toString();
+		}
 
-    parse: function (jsonStr) {
-        // parse json string
-        var jsonObj = JSON.parse(jsonStr);
-        
-        // extract ciphertext from json object, and create cipher params object
-        var cipherParams = CryptoJS.lib.CipherParams.create({
-            ciphertext: CryptoJS.enc.Base64.parse(jsonObj.ct)
-        });
-        
-        // optionally extract iv and salt
-        if (jsonObj.iv) {
-            cipherParams.iv = CryptoJS.enc.Hex.parse(jsonObj.iv);
-        }
-            
-        if (jsonObj.s) {
-            cipherParams.salt = CryptoJS.enc.Hex.parse(jsonObj.s);
-        }
-        
-        return cipherParams;
-    }
+		if (cipherParams.salt) {
+			jsonObj.s = cipherParams.salt.toString();
+		}
+
+		// stringify json object
+		return JSON.stringify(jsonObj)
+	},
+
+	parse: function (jsonStr) {
+		// parse json string
+		var jsonObj = JSON.parse(jsonStr);
+
+		// extract ciphertext from json object, and create cipher params object
+		var cipherParams = CryptoJS.lib.CipherParams.create({
+			ciphertext: CryptoJS.enc.Base64.parse(jsonObj.ct)
+		});
+
+		// optionally extract iv and salt
+		if (jsonObj.iv) {
+			cipherParams.iv = CryptoJS.enc.Hex.parse(jsonObj.iv);
+		}
+
+		if (jsonObj.s) {
+			cipherParams.salt = CryptoJS.enc.Hex.parse(jsonObj.s);
+		}
+
+		return cipherParams;
+	}
 };
 
 exports.JsonFormatter = JsonFormatter;
@@ -8507,7 +8507,7 @@ code.google.com/p/crypto-js/wiki/License
 
     function timedOut() {
       self._timedOut = true
-      self.request.abort()      
+      self.request.abort()
     }
 
     function error(resp, msg, t) {
@@ -13840,13 +13840,13 @@ module.exports = RelationTreeBuilder;
         };
         return q;
     };
-    
+
     async.priorityQueue = function (worker, concurrency) {
-        
+
         function _compareTasks(a, b){
           return a.priority - b.priority;
         };
-        
+
         function _binarySearch(sequence, item, compare) {
           var beg = -1,
               end = sequence.length - 1;
@@ -13860,7 +13860,7 @@ module.exports = RelationTreeBuilder;
           }
           return beg;
         }
-        
+
         function _insert(q, data, priority, callback) {
           if (!q.started){
             q.started = true;
@@ -13882,7 +13882,7 @@ module.exports = RelationTreeBuilder;
                   priority: priority,
                   callback: typeof callback === 'function' ? callback : null
               };
-              
+
               q.tasks.splice(_binarySearch(q.tasks, item, _compareTasks) + 1, 0, item);
 
               if (q.saturated && q.tasks.length === q.concurrency) {
@@ -13891,15 +13891,15 @@ module.exports = RelationTreeBuilder;
               async.setImmediate(q.process);
           });
         }
-        
+
         // Start with a normal queue
         var q = async.queue(worker, concurrency);
-        
+
         // Override push to accept second parameter representing priority
         q.push = function (data, priority, callback) {
           _insert(q, data, priority, callback);
         };
-        
+
         // Remove unshift function
         delete q.unshift;
 
@@ -15261,7 +15261,7 @@ module.exports = RelationTreeBuilder;
     }
     // Assume equality for cyclic structures. The algorithm for detecting cyclic
     // structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
-    
+
     // Initializing stack of traversed objects.
     // It's done here since we only need them for objects and arrays comparison.
     aStack = aStack || [];
@@ -15425,7 +15425,7 @@ module.exports = RelationTreeBuilder;
     };
   };
 
-  // Returns a predicate for checking whether an object has a given set of 
+  // Returns a predicate for checking whether an object has a given set of
   // `key:value` pairs.
   _.matcher = _.matches = function(attrs) {
     attrs = _.extendOwn({}, attrs);
@@ -15652,7 +15652,7 @@ module.exports = RelationTreeBuilder;
   // Provide unwrapping proxy for some methods used in engine operations
   // such as arithmetic and JSON stringification.
   _.prototype.valueOf = _.prototype.toJSON = _.prototype.value;
-  
+
   _.prototype.toString = function() {
     return '' + this._wrapped;
   };
@@ -19461,7 +19461,7 @@ module.exports = function compactObject(o) {
 
 },{"underscore":35}],70:[function(require,module,exports){
 /*  Copyright (C) 2012-2014  Kurt Milam - http://xioup.com | Source: https://gist.github.com/1868955
- *   
+ *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
  *
@@ -23821,10 +23821,10 @@ var _ = require('../common')._;
 'use strict';
 
 if (platform.isNativeScript) {
-    var NativeScriptCurrentDevice = require('./NativeScriptCurrentDevice');
+	var NativeScriptCurrentDevice = require('./NativeScriptCurrentDevice');
     module.exports = NativeScriptCurrentDevice;
 } else if (platform.isCordova || platform.isDesktop) {
-    var CordovaCurrentDevice = require('./CordovaCurrentDevice');
+	var CordovaCurrentDevice = require('./CordovaCurrentDevice');
     module.exports = CordovaCurrentDevice;
 } else {
     module.exports = _.noop;
@@ -24068,7 +24068,7 @@ module.exports = (function () {
          */
         areNotificationsEnabled: function (options, onSuccess, onError) {
             options = options || {};
-            
+
             return buildPromise(function (successCb, errorCb) {
                 tnsPushPluginLazy.tnsPushPlugin.areNotificationsEnabled(successCb, errorCb, options);
             }, onSuccess, onError);
@@ -24116,7 +24116,7 @@ module.exports = (function () {
                 tnsPushPluginLazy.tnsPushPlugin.register(
                     apnRegistrationOptions,
                     _.bind(this._successfulRegistrationAPN, this),
-                    _.bind(this._failedRegistrationAPN, this)                    
+                    _.bind(this._failedRegistrationAPN, this)
                 );
             } else if (platformType === Platform.Android) {
                 // Ensure the required fields are present in the Android Settings
@@ -24220,7 +24220,7 @@ module.exports = (function () {
         },
 
         _getLocaleName: function (success, error) {
-            return success(); // TODO            
+            return success(); // TODO
             /* TODO: Must translate somehow to NativeScript to get the current locale
             if (this.emulatorMode) {
                 success({value: 'en_US'});
